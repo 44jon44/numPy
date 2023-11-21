@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from sklearn.datasets import make_circles
 import tensorflow as tf
 from matplotlib import animation
-from IPython.core.display import display, HTML
+
 tf.compat.v1.disable_v2_behavior()
 
 
@@ -48,32 +48,36 @@ nn = [2, 16, 8, 1]  # número de neuronas por capa.
 W1 = tf.Variable(tf.compat.v1.random_normal([nn[0], nn[1]]), name='Weights_1')
 b1 = tf.Variable(tf.compat.v1.random_normal([nn[1]]), name='bias_1')
 
+# Multiplica datosde entrada por los pesos y añade los sesgos
 l1 = tf.nn.relu(tf.add(tf.matmul(iX, W1), b1))
 
 # Capa 2
 W2 = tf.Variable(tf.compat.v1.random_normal([nn[1], nn[2]]), name='Weights_2')
 b2 = tf.Variable(tf.compat.v1.random_normal([nn[2]]), name='bias_2')
 
+# Multiplica la capa anterior por los pesos y añade los sesgos
 l2 = tf.nn.relu(tf.add(tf.matmul(l1, W2), b2))
 
 # Capa 3
 W3 = tf.Variable(tf.compat.v1.random_normal([nn[2], nn[3]]), name='Weights_3')
 b3 = tf.Variable(tf.compat.v1.random_normal([nn[3]]), name='bias_3')
 
-# Vector de predicciones de Y.
+# Vector de predicciones de Y. Capa de salida
 pY = tf.nn.sigmoid(tf.add(tf.matmul(l2, W3), b3))[:, 0]
 
-# Evaluación de las predicciones.
+# Evaluación de las predicciones. Error cuadratico medio
 loss = tf.compat.v1.losses.mean_squared_error(pY, iY)
 
 # Definimos al optimizador de la red, para que minimice el error.
 optimizer = tf.compat.v1.train.GradientDescentOptimizer(learning_rate=0.05).minimize(loss)
 
-n_steps = 1000  # Número de ciclos de entrenamiento.
+n_steps = 20  # Número de ciclos de entrenamiento.
 
 iPY = []  # Aquí guardaremos la evolución de las predicción, para la animación.
 
 with tf.compat.v1.Session() as sess:
+
+
     # Inicializamos todos los parámetros de la red, las matrices W y b.
     sess.run(tf.compat.v1.global_variables_initializer())
 
@@ -85,7 +89,7 @@ with tf.compat.v1.Session() as sess:
         _, _loss, _pY = sess.run([optimizer, loss, pY], feed_dict={iX: X, iY: Y})
 
         # Cada 25 iteraciones, imprimimos métricas.
-        if step % 25 == 0:
+        if step % 2 == 0:
             # Cálculo del accuracy.
             acc = np.mean(np.round(_pY) == Y)
 
@@ -97,6 +101,9 @@ with tf.compat.v1.Session() as sess:
 
             # Y lo guardamos para visualizar la animación.
             iPY.append(_pY)
+
+
+
 # ----- CÓDIGO ANIMACIÓN ----- #
 
 ims = []

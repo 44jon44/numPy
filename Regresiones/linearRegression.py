@@ -31,10 +31,10 @@ x = np.linspace(x_points.min(), x_points.max(), 100)
 # obtenemos la predicción con los ""datos de testing""
 model = list(map(func, x))
 
-# dibujamos por una lado los puntos
+# dibujamos por un lado los puntos
 plt.scatter(x_points, y_points)
 
-# y por otro lado la recta de previsión
+# y, por otro lado, la recta de previsión
 plt.plot(x, model)
 
 # indicamos los ejes y el título del gráfico
