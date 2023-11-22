@@ -3,6 +3,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB
 
 df = pd.read_csv("titanic.csv")
+
 df.drop(['PassengerId', 'Name', 'SibSp', 'Parch', 'Ticket', 'Cabin', 'Embarked'], axis='columns', inplace=True)
 
 inputs = df.drop('Survived', axis='columns')
