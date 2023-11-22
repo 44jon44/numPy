@@ -6,7 +6,6 @@ tf.disable_v2_behavior()
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.datasets import make_circles
-import matplotlib.pyplot as plt
 
 # Crea el dataset. Dos circulos concéntricos
 # X coordenas-- Y valor del punto
@@ -40,7 +39,7 @@ plt.tick_params(labelbottom=False, labelleft=False)
 iX = tf.placeholder('float', shape=[None, X.shape[1]])
 iY = tf.placeholder('float', shape=[None])
 
-lr = 0.01  # learning rate
+#lr = 0.01  # learning rate
 nn = [2, 16, 8, 1]  # número de neuronas por capa.
 
 # Capa 1 nn[](Posiciones del array nn)
@@ -61,8 +60,8 @@ l2 = tf.nn.relu(tf.add(tf.matmul(l1, W2), b2))
 W3 = tf.Variable(tf.random_normal([nn[2], nn[3]]), name='Weights_3')
 b3 = tf.Variable(tf.random_normal([nn[3]]), name='bias_3')
 
-# Vector de predicciones de Y. Capa de salida
-pY = tf.nn.sigmoid(tf.add(tf.matmul(l2, W3), b3))[:, 0]
+# Vector de predicciones de Y. Selecciona la primera columna de salida
+pY = tf.nn.sigmoid(tf.add(tf.matmul(l2, W3), b3))[:,0]
 
 # Evaluación de las predicciones. Error cuadratico medio
 loss = tf.losses.mean_squared_error(pY, iY)
@@ -70,7 +69,7 @@ loss = tf.losses.mean_squared_error(pY, iY)
 # Definimos al optimizador de la red, para que minimice el error.
 optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.05).minimize(loss)
 
-n_steps = 20  # Número de ciclos de entrenamiento.
+n_steps = 80  # Número de ciclos de entrenamiento.
 
 iPY = []  # Aquí guardaremos la evolución de las predicción, para la animación.
 
